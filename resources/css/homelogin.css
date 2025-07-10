@@ -1,0 +1,327 @@
+:root {
+    --primary: #b6895b; /* Warna Kopi */
+    --bg: #010101; /* Warna Hitam */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+    text-decoration: none;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+.main-content {
+    flex: 1; /* Pastikan konten utama mengisi ruang yang tersisa */
+}
+
+html , body {
+    font-family: "Poppins", sans-serif;
+    background-color: var(--bg);
+    color: #5e3901;
+    height: 100%; /* Pastikan tinggi halaman mencakup seluruh layar */
+    margin: 0;    /* Hapus margin default */
+    display: flex; /* Gunakan flexbox untuk mengatur layout */
+    flex-direction: column; /* Susun elemen secara vertikal */
+}
+
+
+/* Navbar Start */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 10%;
+    background-color: rgba(1, 1, 1, 0.8);
+    border-bottom: 1px solid #513c28;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+}
+
+.navbar .navbar-logo {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    font-style: italic;
+}
+
+.navbar .navbar-logo span {
+    color: var(--primary);
+}
+
+.navbar .navbar-nav a {
+    color: #fff;
+    display: inline-block;
+    font-size: 1rem;
+    margin: 1rem;
+}
+
+.navbar .navbar-nav a:hover {
+    color: var(--primary);
+}
+
+.navbar .navbar-nav a::after {
+    content: "";
+    display: block;
+    padding-bottom: 0.5rem;
+    border-bottom: 0.1rem solid var(--primary);
+    transform: scaleX(0);
+    transition: 0.2s linear;
+}
+
+.navbar .navbar-nav a:hover::after {
+    transform: scaleX(0.5);
+}
+
+.navbar .navbar-extra a{
+    color: #fff;
+    margin: 0 0.5rem;
+}
+
+.navbar .navbar-extra a:hover {
+    color: var(--primary);
+}
+
+#hamburger-menu {
+    display: none;
+}
+
+/* Navbar End */
+
+/* Hero Section */
+.hero {
+    min-height: 100vh;
+    background: url("/public/img/homelogin.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* .hero::after {
+      content: "";
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 30%;
+      bottom: 0;
+      background: linear-gradient(
+        0deg,
+        rgba(1, 1, 3, 1) 8%,
+        rgba(255, 255, 255, 0) 50%
+      );
+    } */
+
+.hero h2 {
+    font-size: 70px;
+    mix-blend-mode: difference;
+}
+
+.hero p {
+    font-size: 40px;
+    font-weight: 300;
+}
+
+.hero-content h2,
+.hero-content p {
+    padding: 1.5rem;
+}
+
+.hero .btn {
+    padding: 20px 40px;
+    background-color: #f39c12;
+    margin-top: 7rem;
+    font-size: 20px;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+/* Menu Section start */
+
+
+
+/* Menu Section end */
+
+.promo h2 {
+    /* margin-top: 1rem; */
+    font-size: 2.6rem;
+    padding: 3rem;
+}
+
+.promo h2 span {
+    color: var(--primary);
+}
+
+/* Sections */
+section {
+    padding: 50px 0;
+    text-align: center;
+}
+
+.featured-items {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.product {
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: center;
+    padding: 10px;
+}
+
+.product p {
+    color: var(--bg);
+    font-weight: bold;
+    text-transform: capitalize;
+    font-size: 1.2rem;
+}
+
+.product span {
+    color: var(--bg);
+}
+
+.tombol {
+    display: flex;
+    gap: 200px;
+    align-items: center;
+    padding: 1rem;
+}
+
+.tombol .cart,
+.tombol .view {
+    background-color: var(--bg);
+    color: #fff;
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+/* Footer Start */
+footer {
+    background-color: var(--primary);
+    text-align: center;
+    padding: 1rem 0 3rem;
+    margin-top: 3rem;
+}
+
+
+
+footer .links {
+    margin-bottom: 1.4rem;
+}
+
+footer .links a {
+    color: #fff;
+    padding: 0.7rem 1rem;
+}
+
+footer .credit {
+    font-size: 0.8rem;
+}
+
+footer .credit a {
+    color: var(--bg);
+    font-weight: 700;
+}
+/* Footer End */
+
+/* CAROUSEL */
+.relative {
+    position: relative;
+}
+.transition-transform {
+    transition: transform 0.7s ease-in-out;
+}
+.w-full {
+    width: 100%;
+}
+.flex {
+    display: flex;
+}
+.flex-shrink-0 {
+    flex-shrink: 0;
+}
+.object-cover {
+    object-fit: cover;
+}
+.rounded-lg {
+    border-radius: 8px;
+}
+.shadow-lg {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.bg-gray-900 {
+    background-color: #1f2937;
+}
+.text-white {
+    color: #fff;
+}
+.px-3 {
+    padding-left: 12px;
+    padding-right: 12px;
+}
+.py-2 {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+.rounded-full {
+    border-radius: 9999px;
+}
+.shadow-md {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.bg-gray-700 {
+    background-color: #4b5563;
+}
+.transition {
+    transition: all 0.3s ease;
+}
+.space-x-2 {
+    margin-right: 8px;
+}
+.w-3 {
+    width: 12px;
+}
+.h-3 {
+    height: 12px;
+}
+.rounded-full {
+    border-radius: 50%;
+}
+.border-gray-700 {
+    border-color: #374151;
+}
+.bg-gray-400 {
+    background-color: #d1d5db;
+}
+.bg-white {
+    background-color: #ffffff;
+}
+.carousel-item img {
+    width: 100%; /* Pastikan gambar memenuhi lebar carousel */
+    height: 500px; /* Atur tinggi tetap untuk semua slide */
+    object-fit: cover; /* Potong gambar agar sesuai tanpa mengubah rasio */
+    object-position: center; /* Pastikan gambar selalu terpusat */
+}

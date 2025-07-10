@@ -1,0 +1,62 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+    text-decoration: none;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url("/public/img/kopilogin.jpg") no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+}
+.login-container {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    text-align: left;
+}
+.login-container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #fff;
+    text-align: center;
+}
+.login-container span {
+    color: #f39c12;
+}
+
+.login-container button {
+    padding: 10px;
+    background-color: #f1a94e;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+.login-container button:hover {
+    background-color: #e18d29;
+}
+
+.login-container a {
+    color: #f1a94e;
+    text-decoration: none;
+    font-size: 14px;
+}
+.login-container a:hover {
+    text-decoration: underline;
+}

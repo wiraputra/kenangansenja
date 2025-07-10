@@ -1,0 +1,233 @@
+:root {
+    --primary-color: #ff9900;
+    --secondary-color: #000;
+    --text-color: #fff;
+    --bg-color: #f4f4f4;
+    --primary: #b6895b; /* Warna Kopi */
+    --bg: #010101; /* Warna Hitam */
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+    text-decoration: none;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    color: var(--secondary-color);
+  }
+  /* Navbar Start */
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.4rem 7%;
+    background-color: rgba(1, 1, 1, 0.8);
+    border-bottom: 1px solid #513c28;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+  }
+  
+  .navbar .navbar-logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    font-style: italic;
+  }
+  
+  .navbar .navbar-logo span {
+    color: var(--primary);
+  }
+  
+  .navbar .navbar-nav a {
+    color: #fff;
+    display: inline-block;
+    font-size: 1.2rem;
+    margin: 0 1rem;
+  }
+  
+  .navbar .navbar-nav a:hover {
+    color: var(--primary);
+  }
+  
+  .navbar .navbar-nav a::after {
+    content: "";
+    display: block;
+    padding-bottom: 0.5rem;
+    border-bottom: 0.1rem solid var(--primary);
+    transform: scaleX(0);
+    transition: 0.2s linear;
+  }
+  
+  .navbar .navbar-nav a:hover::after {
+    transform: scaleX(0.5);
+  }
+  
+  .navbar .navbar-extra a {
+    color: #fff;
+    margin: 0 0.5rem;
+  }
+  
+  .navbar .navbar-extra a:hover {
+    color: var(--primary);
+  }
+  
+  #hamburger-menu {
+    display: none;
+  }
+  
+  /* Navbar End */
+  
+  header {
+    background: var(--secondary-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  header .logo {
+    color: var(--text-color);
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  header .logo span {
+    color: var(--primary-color);
+  }
+  
+  header .menu {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+  }
+  
+  header .menu li {
+    display: inline;
+  }
+  
+  header .menu a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .promo {
+    text-align: center;
+    padding: 50px 20px;
+  }
+  
+  .promo h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+  }
+  
+  .promo h1 span {
+    color: var(--primary-color);
+  }
+  
+  .promo-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .product {
+    background: var(--bg-color);
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .product img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .product h3 {
+    font-size: 20px;
+    margin: 10px 0;
+    font-weight: bold;
+  }
+  
+  .product button {
+    background: var(--primary-color);
+    color: var(--text-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .product button:hover {
+    background: #e68a00;
+  }
+  
+  .discount-badge div {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: red;
+    color: var(--text-color);
+    padding: 5px 10px;
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  /* Footer Start */
+  footer {
+    background-color: var(--primary);
+    text-align: center;
+    padding: 1rem 0 3rem;
+    margin-top: 3rem;
+  }
+  
+  footer .socials {
+    padding: 1rem 0;
+  }
+  
+  footer .socials a {
+    color: #fff;
+    margin: 1rem;
+  }
+  
+  footer .socials a:hover,
+  footer .links a:hover {
+    color: var(--bg);
+  }
+  
+  footer .links {
+    margin-bottom: 1.4rem;
+  }
+  
+  footer .links a {
+    color: #fff;
+    padding: 0.7rem 1rem;
+  }
+  
+  footer .credit {
+    font-size: 0.8rem;
+  }
+  
+  footer .credit a {
+    color: var(--bg);
+    font-weight: 700;
+  }
+  /* Footer End */
+  

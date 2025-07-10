@@ -1,0 +1,255 @@
+:root {
+  --primary: #b6895b; /* Warna Kopi */
+  --bg: #010101; /* Warna Hitam */
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #fff;
+    color: #000;
+  }
+  /* Navbar Start */
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 5%;
+    background-color: rgba(1, 1, 1, 0.8);
+    border-bottom: 1px solid #513c28;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+}
+
+.navbar .navbar-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  font-style: italic;
+}
+
+.navbar .navbar-logo span {
+  color: var(--primary);
+}
+
+.navbar .navbar-nav {
+  display: flex;
+  gap: 1rem;
+}
+
+.navbar .navbar-nav a {
+  color: #fff;
+  font-size: 1.2rem;
+}
+
+.navbar .navbar-nav a:hover {
+  color: var(--primary);
+}
+
+.navbar .navbar-nav a::after {
+  content: "";
+  display: block;
+  padding-bottom: 0.5rem;
+  border-bottom: 0.1rem solid var(--primary);
+  transform: scaleX(0);
+  transition: 0.2s linear;
+}
+
+.navbar .navbar-nav a:hover::after {
+  transform: scaleX(0.5);
+}
+
+.navbar .navbar-extra a {
+  color: #fff;
+  margin: 0 0.5rem;
+}
+
+.navbar .navbar-extra a:hover {
+  color: var(--primary);
+}
+
+#hamburger-menu {
+  display: none;
+}
+
+/* Responsiveness for smaller screens */
+@media screen and (max-width: 768px) {
+  .navbar .navbar-nav {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      position: absolute;
+      top: 70px;
+      left: 0;
+      right: 0;
+      background-color: rgba(1, 1, 1, 0.9);
+      padding: 1rem 0;
+  }
+
+  .navbar .navbar-nav a {
+      margin: 1rem 0;
+  }
+
+  .navbar .navbar-extra {
+      display: flex;
+      flex-direction: column;
+  }
+
+  #hamburger-menu {
+      display: block;
+      font-size: 1.5rem;
+      cursor: pointer;
+  }
+
+  #hamburger-menu.open + .navbar-nav {
+      display: flex;
+  }
+}
+
+  
+  .cart-icon {
+    font-size: 24px;
+  }
+  
+  /* Cart Section */
+  .cart {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .cart h1 {
+    text-align: center;
+    font-size: 32px;
+    color: orange;
+  }
+  
+  .cart h1 span {
+    color: black;
+  }
+  
+  .cart-items {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .cart-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  .item-select input {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .item-image img {
+    width: 100px;
+    border-radius: 8px;
+  }
+  
+  .item-details h2 {
+    font-size: 18px;
+  }
+  
+  .item-quantity {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .item-quantity button {
+    background-color: #ccc;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .item-quantity input {
+    width: 40px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  /* Cart Summary */
+  .cart-summary {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .menu-button,
+  .checkout-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+  }
+  
+  .menu-button {
+    background-color: #00f;
+    color: #fff;
+  }
+  
+  .checkout-button {
+    background-color: orange;
+    color: #fff;
+  }
+  
+
+/* Footer Start */
+footer {
+  background-color: var(--primary);
+  color: #fff;
+  text-align: center;
+  padding: 1rem 0 3rem;
+  margin-top: 3rem;
+}
+
+footer .links {
+  margin-bottom: 1.4rem;
+}
+
+footer .links a {
+  color: #fff;
+  padding: 0.7rem 1rem;
+}
+
+footer .links a:hover {
+  color: var(--bg);
+}
+
+footer .credit {
+  font-size: 0.8rem;
+}
+
+footer .credit a {
+  color: var(--bg);
+  font-weight: 700;
+}
+
+/* Responsiveness */
+@media screen and (max-width: 768px) {
+  footer .links {
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+  }
+
+  footer .credit {
+      font-size: 0.85rem;
+  }
+}
