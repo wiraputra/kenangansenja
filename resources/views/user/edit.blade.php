@@ -34,7 +34,7 @@
                             @if (Auth::user()->image)
                                 <img id="preview-avatar" src="{{ asset('storage/' . Auth::user()->image) }}" alt="Avatar" class="w-full h-full object-cover">
                             @else
-                                <img id="preview-avatar" src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=c69466&color=fff" alt="Default Avatar" class="w-full h-full object-cover">
+                                <img id="preview-avatar" src="{{ asset('img/default-avatar.png') }}" alt="Default Avatar" class="w-full h-full object-cover">
                             @endif
                             <!-- Hover Overlay -->
                             <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">

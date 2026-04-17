@@ -47,9 +47,7 @@
                                 @if($user->image)
                                     <img src="{{ Storage::url($user->image) }}" alt="Avatar" class="w-full h-full object-cover">
                                 @else
-                                    <div class="w-full h-full flex items-center justify-center text-slate-400">
-                                        <i class="bi bi-person-fill text-xl"></i>
-                                    </div>
+                                    <img src="{{ asset('img/default-avatar.png') }}" alt="Avatar" class="w-full h-full object-cover">
                                 @endif
                             </div>
                             <div class="ml-4">

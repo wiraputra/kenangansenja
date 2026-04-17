@@ -1,162 +1,132 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="2">
-    <title>Kenangan Senja - Keranjang Saya</title>
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
-    
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+@extends('layouts.store')
 
-    <!-- Feather Icons -->
-    <script src="https://unpkg.com/feather-icons"></script>
-    @vite(['resources/css/homelogin.css', 'resources/css/app.css'])
-    <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@section('title', 'Kenangan Senja - Keranjang Saya')
 
-</head>
-<body style=" background-image: url(storage/img/a1.jpg)" class = "flex flex-col">
-
-
-    <!-- Navbar Start -->
-    <x-navbar />
-
-    <div class="flex-grow">
-
-        <div class="pt-16 container mx-auto px-4 py-8 mt-20">
-        <h1 class="text-5xl text-center md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-red-500 to-yellow-700 drop-shadow-lg tracking-widest">
-        KERANJANG SAYA
+@section('content')
+    <div class="pt-32 pb-24 container mx-auto px-6">
+        <!-- Header -->
+        <div class="text-center mb-16 space-y-4">
+            <h1 class="text-5xl md:text-6xl font-header font-bold text-white italic">
+                Keranjang <span class="text-primary non-italic">Saya.</span>
+            </h1>
+            <p class="text-slate-500 font-light italic">Pesanan Anda yang sedang disiapkan.</p>
         </div>
-    </h1>
-        <!-- Daftar Pesanan -->
-        <div class="container mx-auto py-6">
-            @if(session('cart') && count(session('cart')) > 0)
-            <div class="bg-white p-6 rounded-md shadow-lg">
-                <table class="w-full text-left">
-                    <thead>
-                        <tr>
-                            <th class="py-3 px-4 text-gray-700">Produk</th>
-                            <th class="py-3 px-4 text-gray-700">Harga</th>
-                            <th class="py-3 px-4 text-gray-700">Jumlah</th>
-                            <th class="py-3 px-4 text-gray-700">Subtotal</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach(session('cart') as $productId => $details)
-                        <tr class="border-t border-b">
-                            <td class="py-4 px-4">
-                                <img src="{{ asset('storage/' . $details['image']) }}" alt="{{ $details['name'] }}" class="w-16 h-16 object-cover inline-block mr-4">
-                                {{ $details['name'] }}
-                            </td>
-                            <td class="py-4 px-4">
-                                @if(isset($details['price_after_discount']))
-                                <span class="line-through text-gray-500">{{ number_format($details['price'], 0, ',', '.') }} IDR</span>
-                                <span class="text-yellow-500">{{ number_format($details['price_after_discount'], 0, ',', '.') }} IDR</span>
-                                @else
-                                {{ number_format($details['price'], 0, ',', '.') }} IDR
-                                @endif
-                            </td>
-                            <td class="py-4 px-4">{{ $details['quantity'] }}</td>
-                            <td class="py-4 px-4">{{ number_format($details['price'] * $details['quantity'], 0, ',', '.') }} IDR</td>
-                            <td class="py-4 px-4">
-                                <form action="{{ route('cart.remove', $productId) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-500 hover:text-red-700">
-                                        <i data-feather="trash-2"></i> Hapus
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-            @else
-            <p class="text-white text-center mt-8 mb-5">Keranjang Anda kosong.</p>
-            <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
 
-          <a href="{{ route('pesanpage') }}" class="inline-flex justify-center hover:text-white items-center py-3 px-5 sm:ms-4 text-base font-medium text-center text-white rounded-lg border border-white hover:bg-yellow-600 focus:ring-4 bg-yellow-500">
-              Beli Sekarang!
-          </a>  
-      </div>
-            @endif
-        </div>
-        
-        <!-- Total Harga dan Tombol Checkout -->
         @if(session('cart') && count(session('cart')) > 0)
-            <div class="flex justify-between mt-2 pt-8 border-t border-gray-600">
-                <div class="text-center md:text-left">
-                    <!-- Tombol Menu Lainnya -->
-                    <div class="text-center mt-4 mb-12 ml-20">
-                        <a href="{{ route('pesanpage') }}" class="bg-yellow-500  px-8 py-4 text-white rounded-sm hover:bg-yellow-400 transition-colors duration-300">
-                            Menu Lainnya
-                        </a>
-                    </div>
-                    <p class="text-black-600 ml-24 font-semibold text-white">TOTAL HARGA:</p>
-                    @php
-                    $totalPrice = 0;
-                    foreach(session('cart') as $product) {
-                            $totalPrice += $product['price'] * $product['quantity'];
-                        }
-                        @endphp
-                        <p class="text-lg font-bold ml-20 px-12 py-4 bg-gray-300">{{ number_format($totalPrice, 0, ',', '.') }} IDR</p>
-                    </div>
-                    <!-- // Tombol Checkout -->
-                    <div>
-                    <form action="{{ route('checkout') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="bg-yellow-500 mr-20 px-10 py-4 text-white rounded-sm hover:bg-yellow-400">
-                    BELI SEKARANG
-                    </button>
-                    </form>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 max-w-7xl mx-auto">
+                <!-- Cart Items List -->
+                <div class="lg:col-span-2 space-y-6">
+                    @foreach(session('cart') as $productId => $details)
+                        <div class="glass-dark p-6 rounded-[2rem] border border-white/5 flex flex-col sm:flex-row items-center gap-8 transition-all hover:bg-white/5">
+                            <!-- Image -->
+                            <div class="w-24 h-24 rounded-2xl overflow-hidden border border-white/10 flex-shrink-0">
+                                <img src="{{ asset('storage/' . $details['image']) }}" alt="{{ $details['name'] }}" class="w-full h-full object-cover">
+                            </div>
 
+                            <!-- Info -->
+                            <div class="flex-grow text-center sm:text-left space-y-1">
+                                <h3 class="text-xl font-header font-bold text-white">{{ $details['name'] }}</h3>
+                                <p class="text-xs text-slate-500 uppercase tracking-widest font-bold">Premium Select</p>
+                                <div class="flex items-center justify-center sm:justify-start gap-4 mt-2">
+                                    @if(isset($details['price_after_discount']))
+                                        <span class="text-xs line-through text-slate-600">IDR {{ number_format($details['price'], 0, ',', '.') }}</span>
+                                        <span class="text-sm font-bold text-primary">IDR {{ number_format($details['price_after_discount'], 0, ',', '.') }}</span>
+                                    @else
+                                        <span class="text-sm font-bold text-primary">IDR {{ number_format($details['price'], 0, ',', '.') }}</span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <!-- Quantity -->
+                            <div class="px-6 py-2 glass-dark rounded-xl border border-white/5 text-sm font-bold text-white min-w-[80px] text-center">
+                                x{{ $details['quantity'] }}
+                            </div>
+
+                            <!-- Subtotal -->
+                            <div class="min-w-[120px] text-center sm:text-right">
+                                <p class="text-[10px] uppercase tracking-[0.2em] text-slate-500 mb-1">Subtotal</p>
+                                <p class="text-lg font-bold text-white italic">IDR {{ number_format($details['price'] * $details['quantity'], 0, ',', '.') }}</p>
+                            </div>
+
+                            <!-- Remove -->
+                            <form action="{{ route('cart.remove', $productId) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="p-3 text-red-400 hover:text-red-500 hover:bg-red-500/10 rounded-xl transition-all">
+                                    <i class="bi bi-trash3-fill"></i>
+                                </button>
+                            </form>
+                        </div>
+                    @endforeach
+
+                    <div class="pt-8 flex justify-between items-center px-6">
+                         <a href="{{ route('categories.index') }}" class="text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-white transition-colors flex items-center gap-3">
+                            <i class="bi bi-arrow-left"></i> Kembali Berbelanja
+                        </a>
+                        <p class="text-[10px] text-slate-600 font-bold uppercase tracking-[0.3em]">Kenangan Senja Collection</p>
+                    </div>
+                </div>
+
+                <!-- Order Summary Sidebar -->
+                <div class="lg:col-span-1">
+                    <div class="glass-dark p-10 rounded-[3rem] border border-white/5 space-y-8 sticky top-32">
+                        <h2 class="text-2xl font-header font-bold text-white mb-6">Ringkasan <span class="text-primary italic">Belanja.</span></h2>
+                        
+                        <div class="space-y-4 pt-6 border-t border-white/5">
+                            <div class="flex justify-between text-sm text-slate-400">
+                                <span>Total Item</span>
+                                <span class="text-white font-bold">{{ count(session('cart')) }} Produk</span>
+                            </div>
+                            <div class="flex justify-between text-sm text-slate-400">
+                                <span>Estimasi Pajak</span>
+                                <span class="text-white font-bold italic">Included</span>
+                            </div>
+                        </div>
+
+                        <div class="pt-8 border-t border-primary/20">
+                            <div class="flex flex-col gap-2">
+                                <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-primary">Grand Total</p>
+                                @php
+                                $totalPrice = 0;
+                                foreach(session('cart') as $product) {
+                                    $totalPrice += $product['price'] * $product['quantity'];
+                                }
+                                @endphp
+                                <p class="text-4xl font-header font-black text-white italic tracking-tighter">IDR {{ number_format($totalPrice, 0, ',', '.') }}</p>
+                            </div>
+                        </div>
+
+                        <form action="{{ route('checkout') }}" method="POST" class="pt-6">
+                            @csrf
+                            <button type="submit" class="w-full py-5 bg-primary hover:bg-primary-light text-white font-bold rounded-2xl transition-all shadow-xl shadow-primary/20 hover:shadow-primary/40 flex items-center justify-center gap-3 group">
+                                <i class="bi bi-cart-check-fill text-xl"></i>
+                                CHEKOUT SEKARANG!
+                            </button>
+                        </form>
+                        
+                        <div class="pt-6 text-center">
+                            <p class="text-[10px] text-slate-500 font-light flex items-center justify-center gap-2">
+                                <i class="bi bi-shield-check text-primary"></i> Secure Transaction Guarantee
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @else
+            <div class="max-w-xl mx-auto text-center py-24 glass-dark rounded-[3rem] border border-white/5 space-y-8">
+                <div class="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mx-auto">
+                    <i class="bi bi-bag-x text-5xl text-slate-600"></i>
+                </div>
+                <div class="space-y-2">
+                    <h2 class="text-3xl font-header font-bold text-white italic">Wah, Keranjang Masih Kosong!</h2>
+                    <p class="text-slate-500 font-light">Sepertinya Anda belum menemukan momen senja yang pas untuk dinikmati.</p>
+                </div>
+                <div class="pt-6">
+                    <a href="{{ route('categories.index') }}" class="px-12 py-5 bg-primary hover:bg-primary-light text-white font-bold rounded-2xl transition-all shadow-xl shadow-primary/20">
+                        Ayo Cari Kopi Sekarang
+                    </a>
+                </div>
             </div>
         @endif
-        
     </div>
-</div>
-    
-    <x-footer />
-
-    <!-- Feather Icons -->
-    <script>
-        feather.replace();
-    </script>
-</body>
-</html>
-@if(session('success'))
-    <script>
-        Swal.fire({
-            icon: 'success',
-            title: 'Berhasil',
-            text: '{{ session('success') }}',
-            position: 'center',
-            timer: 2000,  // Waktu tampil SweetAlert dalam milidetik (3000ms = 3 detik)
-        showConfirmButton: false,  // Menghilangkan tombol konfirmasi
-        willClose: () => {
-            // Optional: Anda bisa menambahkan tindakan lain ketika SweetAlert ditutup
-        }
-        });
-        </script>
-        @endif
-    @if(session('error'))
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Terjadi Kesalahan',
-            text: '{{ session('error') }}',
-            timer: 2000,  // Waktu tampil SweetAlert dalam milidetik (3000ms = 3 detik)
-        showConfirmButton: false,  // Menghilangkan tombol konfirmasi
-        willClose: () => {
-            // Optional: Anda bisa menambahkan tindakan lain ketika SweetAlert ditutup
-        }
-        });
-    </script>
-@endif
+@endsection

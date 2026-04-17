@@ -1,97 +1,122 @@
-<!-- resources/views/components/navbar.blade.php -->
-
 @php
 use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 
-$orders = count(Order::where('user_id', Auth::id())->where('status', '!=', 'Completed')->get());
+$activeOrdersCount = count(Order::where('user_id', Auth::id())->where('status', '!=', 'Completed')->get());
 @endphp
 
-<nav class="navbar bg-stone-950 opacity-80 relative sticky">
-    <a href="#" class="navbar-logo text-white text-2xl">Kenangan<span class="text-yellow-400">Senja</span>.</a>
+<nav x-data="{ mobileMenuOpen: false, userDropdownOpen: false }" 
+     class="sticky top-0 z-50 w-full transition-all duration-300 bg-espresso-950/80 backdrop-blur-lg border-b border-white/5 shadow-2xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20">
+            <!-- Logo Section -->
+            <div class="flex-shrink-0 flex items-center">
+                <a href="{{ route('home') }}" class="flex items-center group">
+                   <span class="text-2xl font-header font-extrabold text-white tracking-tight">Kenangan<span class="text-primary group-hover:text-primary-light transition-colors">Senja</span>.</span>
+                </a>
+            </div>
 
-    <!-- Navbar Menu for larger screens -->
-    <div class="navbar-nav hidden lg:flex space-x-8">
-        <a href="{{ route('pembeli.dashboard') }}" class="text-white">Home</a>
-        <a href="{{ route('aboutus') }}" class="text-white">Tentang Kami</a>
-        <a href="{{ route('categories.index') }}" class="text-white">Menu</a>
-    </div>
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex items-center space-x-10">
+                <a href="{{ route('home') }}" class="text-sm font-bold uppercase tracking-widest {{ Request::is('/') ? 'text-primary' : 'text-slate-300 hover:text-white' }} transition-colors">Home</a>
+                <a href="{{ route('aboutus') }}" class="text-sm font-bold uppercase tracking-widest {{ Request::is('aboutus') ? 'text-primary' : 'text-slate-300 hover:text-white' }} transition-colors">Tentang Kami</a>
+                <a href="{{ route('categories.index') }}" class="text-sm font-bold uppercase tracking-widest {{ Request::is('categories*') || Request::is('category*') || Request::is('pembeli/categories*') ? 'text-primary' : 'text-slate-300 hover:text-white' }} transition-colors">Menu</a>
+            </div>
 
-    <!-- Cart and User Menu -->
-    <div class="flex items-center space-x-4">
-        <!-- Cart Logo -->
-        <a href="{{ route('cart') }}" class="flex items-center text-white">
-            <i class="fas fa-shopping-cart text-xl"></i>
-        </a>
+            <!-- Right Actions -->
+            <div class="flex items-center space-x-6">
+                @auth
+                    <!-- Shopping Cart -->
+                    <a href="{{ route('cart') }}" class="relative p-2 text-slate-300 hover:text-primary transition-all">
+                        <i class="bi bi-bag-heart-fill text-xl"></i>
+                    </a>
 
-        <!-- User Menu Button -->
-        <button type="button" class="text-white" id="user-menu-button">
-            <img class="w-8 h-8 rounded-full object-cover border" src="{{ Storage::url(auth()->user()->image) }}" alt="user photo">
-        </button>
+                    <!-- User Profile Dropdown -->
+                    <div class="relative">
+                        <button @click="userDropdownOpen = !userDropdownOpen" 
+                                @click.away="userDropdownOpen = false"
+                                class="flex items-center gap-2 p-1 rounded-full border-2 border-transparent hover:border-primary/50 transition-all focus:outline-none">
+                            @if(auth()->user()->image)
+                                <img src="{{ Storage::url(auth()->user()->image) }}" alt="User" class="w-9 h-9 rounded-full object-cover shadow-lg shadow-black/20">
+                            @else
+                                <img src="{{ asset('img/default-avatar.png') }}" alt="User" class="w-9 h-9 rounded-full object-cover border border-white/10 shadow-lg shadow-black/20">
+                            @endif
+                        </button>
 
-        <!-- Dropdown Menu (Positioned absolutely so it won't affect the navbar size) -->
-        <div class="z-50 hidden text-base w-44 list-none absolute top-10 right-0" id="user-dropdown">
-            <div class="bg-white divide-gray-100 rounded-lg shadow-lg">
-                <ul class="py-2" aria-labelledby="user-menu-button">
-                    <li>
-                        <a href="{{ Auth::user()->role == 'admin' || Auth::user()->role == 'barista' ? route('dashboard') : route('pembeli.dashboard') }}" class="block px-4 py-2 text-sm text-primary hover:bg-gray-100">Dashboard</a>
-                    </li>
-                    <li>
-                        <a href="{{ Auth::user()->role == 'admin' ? route('user.edit') : route('akun') }}" class="block px-4 py-2 text-sm text-primary hover:bg-gray-100">Akun</a>
-                    </li>
-                    <li>
-                        @if($orders)
-                            <a href="{{ route('orders.status') }}" class="block px-4 py-2 text-sm text-primary hover:bg-gray-100">Pesanan ({{ $orders }})</a>
-                        @else
-                        <a href="{{ route('orders.status') }}" class="block px-4 py-2 text-sm text-primary hover:bg-gray-100">Pesanan kosong</a>
-                        @endif
-                    </li>
-                    <li>
-                        <form action="{{ route('logout') }}" method="POST" class="w-full">
-                            @csrf
-                            <button type="submit" class="block w-full px-4 py-2 text-sm text-primary hover:bg-gray-100">Logout</button>
-                        </form>
-                    </li>
-                </ul>
+                        <!-- Dropdown Menu -->
+                        <div x-show="userDropdownOpen" 
+                             x-transition:enter="transition ease-out duration-100"
+                             x-transition:enter-start="opacity-0 scale-95"
+                             x-transition:enter-end="opacity-100 scale-100"
+                             x-transition:leave="transition ease-in duration-75"
+                             class="absolute right-0 mt-3 w-56 origin-top-right bg-espresso-900 border border-white/5 rounded-2xl shadow-2xl py-2 z-50 overflow-hidden"
+                             style="display: none;">
+                            
+                            <div class="px-4 py-3 border-b border-white/5 mb-1">
+                                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Akun Aktif</p>
+                                <p class="text-sm font-bold text-white truncate">{{ auth()->user()->name }}</p>
+                            </div>
+
+                            @if(auth()->user()->role === 'admin' || auth()->user()->role === 'barista')
+                                <a href="{{ route('dashboard') }}" class="flex items-center px-4 py-3 text-sm text-slate-300 hover:bg-white/5 hover:text-primary transition-colors">
+                                    <i class="bi bi-speedometer2 mr-3"></i> Admin Dashboard
+                                </a>
+                            @endif
+
+                            <a href="{{ auth()->user()->role == 'admin' ? route('user.edit') : route('akun') }}" class="flex items-center px-4 py-3 text-sm text-slate-300 hover:bg-white/5 hover:text-primary transition-colors">
+                                <i class="bi bi-person-circle mr-3"></i> Pengaturan Akun
+                            </a>
+
+                            <a href="{{ route('orders.status') }}" class="flex items-center px-4 py-3 text-sm text-slate-300 hover:bg-white/5 hover:text-primary transition-colors justify-between">
+                                <div class="flex items-center">
+                                    <i class="bi bi-receipt mr-3"></i> Pesanan Saya
+                                </div>
+                                @if($activeOrdersCount > 0)
+                                    <span class="bg-primary text-white text-[10px] px-2 py-0.5 rounded-full font-bold">{{ $activeOrdersCount }}</span>
+                                @endif
+                            </a>
+
+                            <div class="border-t border-white/5 mt-1 pt-1">
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="flex items-center w-full px-4 py-3 text-sm text-red-400 hover:bg-red-500/10 transition-colors text-left">
+                                        <i class="bi bi-box-arrow-right mr-3"></i> Logout
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                @else
+                    <div class="hidden md:flex items-center space-x-4">
+                        <a href="{{ route('login') }}" class="text-sm font-bold text-white hover:text-primary transition-colors">Login</a>
+                        <a href="{{ route('register') }}" class="px-6 py-2 bg-primary hover:bg-primary-light text-white text-sm font-bold rounded-xl transition-all shadow-lg shadow-primary/20">Daftar</a>
+                    </div>
+                @endauth
+
+
+                <!-- Mobile menu button -->
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden p-2 text-slate-300 hover:text-white transition-colors">
+                    <i class="bi text-2xl" :class="mobileMenuOpen ? 'bi-x-lg' : 'bi-list'"></i>
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- Mobile Menu Button -->
-    <div class="lg:hidden flex items-center">
-        <button class="text-white" id="mobile-menu-button">
-            <i class="fas fa-bars text-2xl"></i>
-        </button>
-    </div>
-
-    <!-- Mobile Dropdown Menu (hidden by default) -->
-    <div class="lg:hidden hidden absolute w-full top-full p-2 left-0 bg-stone-950 z-50" id="mobile-menu">
-        <div class="bg-white divide-y divide-gray-100 rounded-lg shadow-lg">
-            <ul class="py-2">
-                <li>
-                    <a href="{{ route('pembeli.dashboard') }}" class="block px-4 py-2 text-sm text-primary hover:bg-gray-100">Home</a>
-                </li>
-                <li>
-                    <a href="{{ route('aboutus') }}" class="block px-4 py-2 text-sm text-primary hover:bg-gray-100">Tentang Kami</a>
-                </li>
-                <li>
-                    <a href="{{ route('categories.index') }}" class="block px-4 py-2 text-sm text-primary hover:bg-gray-100">Menu</a>
-                </li>
-            </ul>
+    <!-- Mobile Menu -->
+    <div x-show="mobileMenuOpen" 
+         x-transition:enter="transition ease-out duration-200"
+         x-transition:enter-start="opacity-0 -translate-y-4"
+         x-transition:enter-end="opacity-100 translate-y-0"
+         class="md:hidden bg-espresso-950/95 backdrop-blur-xl border-t border-white/5"
+         style="display: none;">
+        <div class="px-4 pt-4 pb-6 space-y-2">
+            <a href="{{ route('pembeli.dashboard') }}" class="block px-4 py-3 rounded-xl text-base font-bold text-slate-300 hover:bg-white/5 hover:text-primary">Home</a>
+            <a href="{{ route('aboutus') }}" class="block px-4 py-3 rounded-xl text-base font-bold text-slate-300 hover:bg-white/5 hover:text-primary">Tentang Kami</a>
+            <a href="{{ route('categories.index') }}" class="block px-4 py-3 rounded-xl text-base font-bold text-slate-300 hover:bg-white/5 hover:text-primary">Menu</a>
+            @if(auth()->user()->role === 'admin' || auth()->user()->role === 'barista')
+                <hr class="border-white/5 my-2">
+                <a href="{{ route('dashboard') }}" class="block px-4 py-3 rounded-xl text-base font-bold text-primary bg-primary/10">Dashboard Admin</a>
+            @endif
         </div>
     </div>
 </nav>
-
-<script>
-    // Toggle user dropdown visibility on button click (both mobile and desktop)
-    document.getElementById('user-menu-button').addEventListener('click', function() {
-        const dropdownMenu = document.getElementById('user-dropdown');
-        dropdownMenu.classList.toggle('hidden');
-    });
-
-    // Toggle mobile menu visibility
-    document.getElementById('mobile-menu-button').addEventListener('click', function() {
-        const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenu.classList.toggle('hidden');
-    });
-</script>

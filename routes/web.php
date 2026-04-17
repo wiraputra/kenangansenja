@@ -41,7 +41,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 | Buyer Routes (Protected by Auth)
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'role:pembeli'])->group(function () {
     Route::get('/pembeli', function () {
         return view('pembeli.dashboard');
     })->name('pembeli.dashboard');
@@ -85,6 +85,10 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'role:admin,barista'])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
     
+    // POS Routes
+    Route::get('/pos', [\App\Http\Controllers\POSController::class, 'index'])->name('pos.index');
+    Route::post('/pos/checkout', [\App\Http\Controllers\POSController::class, 'checkout'])->name('pos.checkout');
+
     // Orders Management
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::post('/orders/{order}/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');

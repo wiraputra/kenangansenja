@@ -87,6 +87,12 @@
                     <i class="bi bi-grid-fill text-xl min-w-[24px]"></i>
                     <span x-show="!sidebarCollapsed" class="ml-4 font-semibold whitespace-nowrap transition-opacity duration-300">Dashboard</span>
                 </a>
+                
+                <a href="{{ route('pos.index') }}" 
+                   class="flex items-center p-3 rounded-xl transition-all group {{ Request::is('pos*') ? 'bg-primary text-white shadow-lg shadow-primary/30' : 'hover:bg-slate-100 dark:hover:bg-espresso-800 text-slate-500 dark:text-espresso-400' }}">
+                    <i class="bi bi-calculator-fill text-xl min-w-[24px]"></i>
+                    <span x-show="!sidebarCollapsed" class="ml-4 font-semibold whitespace-nowrap transition-opacity duration-300">Point of Sale</span>
+                </a>
                 @endif
 
                 @if(auth()->user()->role === 'admin')
@@ -171,7 +177,7 @@
                         @if(auth()->user()->image)
                             <img src="{{ Storage::url(auth()->user()->image) }}" alt="User" class="w-8 h-8 rounded-lg object-cover">
                         @else
-                            <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=c69466&color=fff" alt="User" class="w-8 h-8 rounded-lg object-cover">
+                            <img src="{{ asset('img/default-avatar.png') }}" alt="User" class="w-8 h-8 rounded-lg object-cover">
                         @endif
                     </button>
                     <div x-show="open" @click.outside="open = false" x-transition.origin.top.right class="absolute right-0 mt-3 w-48 bg-white dark:bg-espresso-800 rounded-2xl shadow-xl border border-slate-200 dark:border-espresso-700 py-2 z-50 overflow-hidden text-sm">

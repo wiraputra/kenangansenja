@@ -1,151 +1,125 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kenangan Senja</title>
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
+@extends('layouts.store')
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
-    
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@section('title', 'Kenangan Senja - Detail Pesanan #' . $order->order_id)
 
-    <!-- Feather Icons -->
-    <script src="https://unpkg.com/feather-icons"></script>
-    @vite(['resources/css/homelogins.css', 'resources/css/app.css'])
-    
-    <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
-
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: #1F1F1F;
-            color: #fff;
-        }
-
-        h2, h3 {
-            font-weight: 700;
-            color: #FFB800;
-        }
-
-        .order-details {
-            background: #2D2D2D;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            margin-bottom: 20px;
-        }
-
-        .order-details p {
-            font-size: 1.1rem;
-            margin: 10px 0;
-        }
-
-        table {
-            width: 100%;
-            margin-top: 20px;
-            border-collapse: collapse;
-        }
-
-        table, th, td {
-            border: 1px solid #444;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #333;
-            color: #FFB800;
-        }
-
-        tr:hover {
-            background-color: #444;
-        }
-
-        .btn-view-details {
-            background-color: #FFB800;
-            color: black;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 10px;
-        }
-
-        .btn-view-details:hover {
-            background-color: #FFA500;
-        }
-
-        .btn-buy-now {
-            background-color: #28a745;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 10px;
-        }
-
-        .btn-buy-now:hover {
-            background-color: #218838;
-        }
-    </style>
-
-</head>
-<body>
-    <x-navbar />
-
-    <div class="container mx-auto p-8 mt-24">
-        <div class="order-details">
-            <h2>Detail Pesanan {{ $order->order_id }}</h2>
-            <p>Status: <span class="font-semibold text-yellow-500">{{ $order->status }}</span></p>
-            <p>Total Harga: <span class="font-semibold text-yellow-500">{{ number_format($order->total_price, 2, ',', '.') }} IDR</span></p>
+@section('content')
+    <div class="pt-32 pb-24 container mx-auto px-6 max-w-5xl">
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-12 gap-6">
+            <div class="space-y-4">
+                <a href="{{ route('orders.status') }}" class="text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-white transition-colors flex items-center gap-2 mb-4">
+                    <i class="bi bi-arrow-left"></i> Kembali ke Riwayat
+                </a>
+                <h1 class="text-4xl md:text-5xl font-header font-bold text-white italic">
+                    Ringkasan <span class="text-primary non-italic">Transaksi.</span>
+                </h1>
+                <p class="text-slate-500 font-light">Detail autentik pesanan senja Anda di bawah ini.</p>
+            </div>
             
-            <h3>Rincian Produk:</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nama Produk</th>
-                        <th>Harga</th>
-                        <th>Jumlah</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <div class="flex items-center gap-4">
+                <div class="px-6 py-3 bg-white/5 border border-white/5 rounded-2xl flex items-center gap-4">
+                    <div class="text-right">
+                        <p class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Order ID</p>
+                        <p class="text-sm font-bold text-white italic">#{{ $order->order_id }}</p>
+                    </div>
+                    <div class="h-8 w-px bg-white/10"></div>
+                     <div class="px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest border border-white/5
+                        {{ $order->status === 'Pending' ? 'bg-yellow-500/10 text-yellow-500' : '' }}
+                        {{ $order->status === 'Selesai' || $order->status === 'Completed' ? 'bg-green-500/10 text-green-500' : '' }}
+                        {{ !in_array($order->status, ['Pending', 'Completed', 'Selesai']) ? 'bg-primary/10 text-primary' : '' }}
+                    ">
+                        {{ $order->status }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Receipt Card -->
+        <div class="glass-dark rounded-[3rem] p-10 md:p-16 border border-white/5 shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary to-orange-400"></div>
+            
+            <!-- Branding/Info -->
+            <div class="flex flex-col md:flex-row justify-between gap-12 mb-16 border-b border-white/5 pb-12">
+                <div class="space-y-6">
+                    <h2 class="text-2xl font-header font-bold text-white">Kenangan<span class="text-primary italic">Senja</span>.</h2>
+                    <div class="space-y-1">
+                        <p class="text-xs font-bold uppercase tracking-widest text-slate-500">Dikirim ke:</p>
+                        <p class="text-lg text-white font-light italic">{{ auth()->user()->name }}</p>
+                        <p class="text-sm text-slate-400 font-light max-w-xs">{{ auth()->user()->address ?? 'Alamat belum diatur.' }}</p>
+                    </div>
+                </div>
+
+                <div class="space-y-6 md:text-right">
+                    <div class="space-y-1">
+                        <p class="text-xs font-bold uppercase tracking-widest text-slate-500">Tanggal Pesanan</p>
+                        <p class="text-lg text-white font-light italic">{{ $order->created_at->format('d F Y') }}</p>
+                        <p class="text-xs text-slate-400 font-light">{{ $order->created_at->format('H:i T') }}</p>
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-xs font-bold uppercase tracking-widest text-slate-500">Metode Pembayaran</p>
+                        <p class="text-lg text-white font-light italic">Store Balance / QRIS</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Items Table -->
+            <div class="space-y-8 mb-16">
+                <h3 class="text-xs font-bold uppercase tracking-[0.3em] text-primary italic">Detail Item</h3>
+                <div class="space-y-4">
                     @foreach($order->orderDetails as $detail)
-                        <tr>
-                            <td>{{ $detail->product->name }}</td>
-                            <td>{{ number_format($detail->product->price, 2, ',', '.') }} IDR</td>
-                            <td>{{ $detail->quantity }}</td>
-                            <td>{{ number_format($detail->subtotal, 2, ',', '.') }} IDR</td>
-                        </tr>
+                        <div class="flex items-center justify-between py-4 border-b border-white/5 group hover:bg-white/5 px-4 rounded-xl transition-all">
+                            <div class="flex items-center gap-6">
+                                <div class="w-12 h-12 rounded-lg overflow-hidden border border-white/10 group-hover:scale-110 transition-transform">
+                                    <img src="{{ $detail->product->image ? asset('storage/' . $detail->product->image) : asset('img/espresso_remastered.png') }}" class="w-full h-full object-cover">
+                                </div>
+                                <div>
+                                    <p class="text-white font-bold">{{ $detail->product->name }}</p>
+                                    <p class="text-xs text-slate-500">{{ $detail->quantity }} x Rp {{ number_format($detail->product->price, 0, ',', '.') }}</p>
+                                </div>
+                            </div>
+                            <p class="text-white font-bold italic">IDR {{ number_format($detail->subtotal, 0, ',', '.') }}</p>
+                        </div>
                     @endforeach
-                </tbody>
-            </table>
+                </div>
+            </div>
 
-            @if($order->promotion_id)
-                <p>Promo yang digunakan: <span class="font-semibold text-yellow-500">{{ $order->promotion->name }}</span></p>
-            @endif
-<!-- 
-            @if($order->status === 'Pending')
-                <form action="#" method="GET">
-                    <button type="submit" class="btn-buy-now">Beli Sekarang</button>
-                </form>
-            @endif -->
+            <!-- Billing -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                     @if($order->promotion_id)
+                        <div class="p-6 bg-primary/10 rounded-2xl border border-primary/20 space-y-2">
+                            <p class="text-[10px] font-bold uppercase tracking-widest text-primary">Aplied Promotion</p>
+                            <h4 class="text-white font-bold italic">{{ $order->promotion->name }}</h4>
+                            <p class="text-xs text-slate-400 font-light">Anda telah menikmati penghematan spesial senja.</p>
+                        </div>
+                    @endif
+                </div>
 
-            <a href="{{ route('orders.status') }}" class="btn-view-details">Kembali ke Pesanan</a>
+                <div class="space-y-4">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-slate-500">Subtotal Item</span>
+                        <span class="text-white font-bold">IDR {{ number_format($order->total_price, 0, ',', '.') }}</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-slate-500">Pajak (Included)</span>
+                        <span class="text-white font-bold">Rp 0</span>
+                    </div>
+                    <div class="pt-6 border-t border-white/10 flex justify-between items-end">
+                        <div class="space-y-1">
+                            <p class="text-[10px] font-bold uppercase tracking-widest text-primary italic opacity-70">Total Pembayaran</p>
+                            <p class="text-4xl font-header font-black text-white italic tracking-tighter">IDR {{ number_format($order->total_price, 0, ',', '.') }}</p>
+                        </div>
+                        <div class="text-[10px] font-bold uppercase tracking-widest text-green-500 bg-green-500/10 px-3 py-1 rounded-full border border-green-500/20">
+                            Verified Pain
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer Note -->
+            <div class="mt-20 pt-8 border-t border-dashed border-white/10 text-center">
+                <p class="text-[10px] text-slate-600 font-bold uppercase tracking-[0.4em]">Nikmati Setiap Tegukannya. Kenangan Senja @ {{ date('Y') }}</p>
+            </div>
         </div>
     </div>
-
-    <x-footer />
-</body>
-</html>
+@endsection
