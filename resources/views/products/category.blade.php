@@ -1,134 +1,95 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kenangan Senja - Kategori</title>
+@extends('layouts.store')
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+@section('title', 'Kenangan Senja - ' . $category)
 
-    <!-- Font Awesome & Flowbite -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
-
-    <!-- Feather Icons -->
-    <script src="https://unpkg.com/feather-icons"></script>
-
-    <!-- Vite CSS -->
-    @vite(['resources/css/category.css', 'resources/css/app.css'])
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <style>
-        #user-dropdown {
-            z-index: 9999;
-        }
-        body {
-            background-image: url('{{ asset('storage/img/a1.jpg') }}');
-            background-size: cover;
-            background-attachment: fixed;
-            background-position: center;
-        }
-        h1, h5, p {
-            color: #FFD700;
-        }
-        .product-card {
-            background-color: rgba(255, 140, 0, 0.8);
-            border: 1px solid #FF8C00;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
-        }
-        .btn-detail {
-            background-color: #FF4500;
-            color: #fff;
-        }
-        .btn-detail:hover {
-            background-color: #FF6347;
-        }
-        .btn-promote {
-            background-color: #FFA500;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 8px;
-            text-align: center;
-            display: inline-block;
-            margin-bottom: 20px;
-            transition: background-color 0.3s ease;
-        }
-        .btn-promote:hover {
-            background-color: #FF8C00;
-        }
-        .stok-habis {
-            background-color: #A9A9A9;
-            color: #fff;
-            cursor: not-allowed;
-        }
-    </style>
-</head>
-<body>
-
-    <x-navbar />
-    <div class="container mx-auto px-4 py-6 mt-24">
-        <h1 class="text-4xl text-center font-semibold tracking-wide">
-            KATEGORI: <span class="text-orange-400">{{ $category }}</span>
-        </h1>
-
-    @if($products->isEmpty())
-        <p class="text-center text-gray-300 mt-8">Belum ada produk di kategori ini.</p>
-    @else
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-            @foreach ($products as $product)
-                @if (!$product->is_promoted)
-                    <div class="product-card rounded-xl overflow-hidden hover:scale-105 transition">
-                        <img src="{{ $product->image ? asset('storage/' . $product->image) : '/img/default.jpg' }}" 
-                             class="w-full h-48 object-cover" alt="{{ $product->name }}">
-                        <div class="p-4">
-                            <h5 class="text-lg font-semibold">{{ $product->name }}</h5>
-                            <p class="text-gray-200">{{ Str::words($product->description, 10) }}</p>
-                            <span class="text-yellow-300 font-bold">{{ number_format($product->price, 0, ',', '.') }} IDR</span>
-                            
-                            <!-- Informasi Stok -->
-                            @if($product->stok > 0)
-                                <p class="mt-2 text-green-400 font-medium">Stok: {{ $product->stok }}</p>
-                            @else
-                                <p class="mt-2 text-red-500 font-medium">Stok Habis</p>
-                            @endif
-
-                            <!-- Tombol Detail (Nonaktif jika stok habis) -->
-                            @if($product->stok > 0)
-                                <a href="{{ route('products.detail', ['product_id' => $product->product_id]) }}" 
-                                   class="btn-detail block mt-2 py-1 px-4 rounded-full text-center">
-                                    Lihat Detail
-                                </a>
-                            @else
-                                <button class="btn-detail stok-habis block mt-2 py-1 px-4 rounded-full text-center" disabled>
-                                    Stok Habis
-                                </button>
-                            @endif
-                        </div>
-                    </div>
-                @endif
-            @endforeach
+@section('content')
+    <div class="pt-32 pb-24 container mx-auto px-6">
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
+            <div class="space-y-4">
+                <div class="inline-block px-4 py-2 glass-dark rounded-full text-primary text-xs font-bold uppercase tracking-[0.3em]">
+                    Collection / {{ $category }}
+                </div>
+                <h1 class="text-5xl md:text-7xl font-header font-bold text-white tracking-tight">
+                    Menu <span class="text-primary italic">{{ $category }}</span>
+                </h1>
+                <p class="text-slate-500 max-w-xl font-light">Pilihan terbaik dari koleksi {{ Str::lower($category) }} kami, disiapkan dengan penuh ketelitian.</p>
+            </div>
+            
+            <a href="{{ route('promotepage') }}" class="group flex items-center gap-4 bg-primary/10 hover:bg-primary px-8 py-4 rounded-2xl transition-all border border-primary/20">
+                <div class="text-right">
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-primary group-hover:text-white">Special Offers</p>
+                    <p class="text-sm font-bold text-white">Cek Menu Promo</p>
+                </div>
+                <i class="bi bi-percent text-xl text-primary group-hover:text-white transition-colors"></i>
+            </a>
         </div>
-    @endif
-</div>
 
-<div class="flex justify-center mt-6">
-    <a href="{{ route('promotepage') }}" class="btn-promote">
-        Menu Promosi
-    </a>
-</div>
-<div class="main-content">
+        @if($products->isEmpty())
+            <div class="text-center py-24 glass-dark rounded-[3rem] border border-white/5">
+                <div class="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="bi bi-box-seam text-4xl text-slate-600"></i>
+                </div>
+                <h2 class="text-2xl font-header font-bold text-white mb-2">Maaf, Menu Kosong</h2>
+                <p class="text-slate-500">Belum ada produk di kategori ini untuk saat ini.</p>
+            </div>
+        @else
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                @foreach ($products as $product)
+                    @if (!$product->is_promoted)
+                        <div class="glass-dark rounded-[2.5rem] overflow-hidden transition-all hover-card group border border-white/5 flex flex-col">
+                            <!-- Image Container -->
+                            <div class="relative aspect-square overflow-hidden">
+                                <img src="{{ $product->image ? asset('storage/' . $product->image) : asset('img/hero_remastered.png') }}" 
+                                     alt="{{ $product->name }}" 
+                                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                
+                                <!-- Stock Overlay if low -->
+                                @if($product->stok <= 0)
+                                    <div class="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex items-center justify-center">
+                                        <span class="px-6 py-2 bg-red-500/80 text-white text-xs font-bold uppercase tracking-widest rounded-full">Habis Terjual</span>
+                                    </div>
+                                @elseif($product->stok < 5)
+                                    <div class="absolute top-4 left-4">
+                                        <span class="px-3 py-1 bg-yellow-500/80 text-black text-[10px] font-black uppercase tracking-widest rounded-full">Stok Tipis!</span>
+                                    </div>
+                                @endif
+                                
+                                <!-- Actions Overlay -->
+                                <div class="absolute bottom-4 right-4 flex flex-col gap-2 translate-y-20 group-hover:translate-y-0 transition-transform duration-500">
+                                    <a href="{{ route('products.detail', ['product_id' => $product->product_id]) }}" 
+                                       class="w-12 h-12 bg-primary hover:bg-primary-light text-white rounded-xl flex items-center justify-center shadow-xl shadow-primary/20">
+                                        <i class="bi bi-bag-plus-fill"></i>
+                                    </a>
+                                </div>
+                            </div>
 
-</div>
-<x-footer />
-
-</body>
-</html>
+                            <!-- Content -->
+                            <div class="p-8 flex flex-col flex-grow">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="text-xl font-header font-bold text-white leading-tight">{{ $product->name }}</h3>
+                                    <span class="text-primary font-bold">Rp{{ number_format($product->price/1000, 0) }}K</span>
+                                </div>
+                                <p class="text-slate-500 text-xs font-light mb-6 line-clamp-2 leading-relaxed">
+                                    {{ $product->description }}
+                                </p>
+                                
+                                <div class="mt-auto flex items-center justify-between border-t border-white/5 pt-6">
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-1.5 h-1.5 rounded-full {{ $product->stok > 0 ? 'bg-green-500' : 'bg-red-500' }}"></span>
+                                        <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                                            {{ $product->stok > 0 ? 'Tersedia: ' . $product->stok : 'Kosong' }}
+                                        </span>
+                                    </div>
+                                    <a href="{{ route('products.detail', ['product_id' => $product->product_id]) }}" class="text-[10px] font-bold uppercase tracking-widest text-white hover:text-primary transition-colors">
+                                        Detail Produk <i class="bi bi-arrow-right ml-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                @endforeach
+            </div>
+        @endif
+    </div>
+@endsection

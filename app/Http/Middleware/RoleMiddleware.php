@@ -3,24 +3,34 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class RoleMiddleware
 {
-    public function handle($request, Closure $next, $role)
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @param  string  ...$roles
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function handle(Request $request, Closure $next, ...$roles): Response
     {
-        // Jika pengguna belum login, arahkan ke login
         if (!Auth::check()) {
-            return redirect('/login');
+            return redirect()->route('login');
         }
-    
-        // Jika pengguna login tetapi role tidak sesuai
-        if (Auth::user()->role !== $role) {
-            return redirect('/'); // Arahkan ke halaman default
-        }
-    
-        return $next($request);
-    }
-    
-}
 
+        $user = Auth::user();
+        
+        // If the user's role is in the list of allowed roles, proceed
+        if (in_array($user->role, $roles)) {
+            return $next($request);
+        }
+
+        // Otherwise, abort with forbidden error
+        abort(403, 'Akses ditolak: Anda tidak memiliki wewenang untuk melihat halaman ini.');
+    }
+}

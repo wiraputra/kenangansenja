@@ -1,88 +1,52 @@
-<?php
-use Illuminate\Support\Str;
-?>
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kenangan Senja - Kategori</title>
+@extends('layouts.store')
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+@section('title', 'Kenangan Senja - Kategori Produk')
 
-    <!-- Font Awesome & Flowbite -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+@section('content')
+    <div class="pt-32 pb-24 container mx-auto px-6">
+        <div class="text-center mb-20 space-y-4">
+            <div class="inline-block px-4 py-2 glass-dark rounded-full text-primary text-xs font-bold uppercase tracking-[0.3em]">
+                Explore Our Collection
+            </div>
+            <h1 class="text-5xl md:text-7xl font-header font-bold text-white tracking-tight">
+                Pilih <span class="text-primary italic">Kategori</span> Favorit Anda.
+            </h1>
+            <p class="text-slate-500 max-w-xl mx-auto font-light">Mulai dari biji kopi pilihan hingga camilan artisanal, temukan pelengkap momen senja Anda di sini.</p>
+        </div>
 
-    <!-- Feather Icons -->
-    <script src="https://unpkg.com/feather-icons"></script>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
+            <!-- Non Coffee -->
+            <a href="{{ route('category.show', 'Non_Coffee') }}" class="group relative block aspect-[4/5] overflow-hidden rounded-[3rem] shadow-2xl transition-all hover-card border border-white/5">
+                <img src="{{ asset('storage/img/non.jpg') }}" alt="Non Coffee" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                <div class="absolute inset-0 p-10 flex flex-col justify-end">
+                    <p class="text-primary font-bold text-xs uppercase tracking-widest mb-2 opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0">Fresh & Natural</p>
+                    <h2 class="text-4xl font-header font-bold text-white italic">Non Coffee</h2>
+                    <div class="mt-4 h-1 w-12 bg-primary transition-all group-hover:w-full"></div>
+                </div>
+            </a>
 
-    <!-- Vite CSS -->
-    @vite(['resources/css/categories.css', 'resources/css/app.css'])
+            <!-- Coffee -->
+            <a href="{{ route('category.show', 'Coffee') }}" class="group relative block aspect-[4/5] overflow-hidden rounded-[3rem] shadow-2xl transition-all hover-card border border-white/5 lg:translate-y-12">
+                <img src="{{ asset('storage/img/kopi1.jpg') }}" alt="Coffee" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                <div class="absolute inset-0 p-10 flex flex-col justify-end">
+                    <p class="text-primary font-bold text-xs uppercase tracking-widest mb-2 opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0">Signature Aroma</p>
+                    <h2 class="text-4xl font-header font-bold text-white italic">Coffee</h2>
+                    <div class="mt-4 h-1 w-12 bg-primary transition-all group-hover:w-full"></div>
+                </div>
+            </a>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <style>
-        #user-dropdown {
-            z-index: 9999;
-        }
-    </style>
-</head>
-<body style="background-image: url(storage/img/a1.jpg) " class="bg-cover">
-
-    <!-- Navigation Menu -->
-    <x-navbar />
-    <div class="container mx-auto px-6 py-10 mt-20 flex flex-col items-center justify-center">
-    <h1 class="text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-red-500 to-orange-900 drop-shadow-lg tracking-widest">
-        PRODUK KAMI
-    </h1>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 ">
-        <!-- Non Coffee -->
-        <a href="{{ route('category.show', 'Non_Coffee') }}" 
-           class="relative group rounded-xl shadow-lg transform transition hover:scale-105">
-           <div class="absolute inset-0 bg-opacity-60 group-hover:bg-opacity-60 rounded-xl flex items-center justify-center">
-               <h2 class="text-4xl font-bold text-white">Non Coffee</h2>
-           </div>
-            <img src="{{ asset('storage/img/non.jpg') }}" alt="Coffee" 
-                 class="w-fit h-fit object-cover rounded-xl opacity-100 group-hover:opacity-100">
-        </a>
-
-        <!-- Coffee -->
-        <a href="{{ route('category.show', 'Coffee') }}" 
-           class="relative group rounded-xl shadow-lg transform transition hover:scale-105">
-           <div class="absolute inset-0  bg-opacity-40 group-hover:bg-opacity-60 rounded-xl flex items-center justify-center">
-               <h2 class="text-4xl font-bold text-white">Coffee</h2>
-           </div>
-            <img src="{{ asset('storage/img/kopi1.jpg') }}" alt="Coffee" 
-                 class="w-fit h-fit object-cover rounded-xl opacity-50 group-hover:opacity-50">
-        </a>
-
-        <!-- Snack -->
-        <a href="{{ route('category.show', 'Snack') }}" 
-           class="relative group rounded-xl shadow-lg transform transition hover:scale-105">
-           <div class="absolute inset-0  bg-opacity-40 group-hover:bg-opacity-60 rounded-xl flex items-center justify-center">
-               <h2 class="text-4xl font-bold text-white">Snack</h2>
-           </div>
-            <img src="{{ asset('storage/img/snak.jpg') }}" alt="Coffee" 
-                 class="w-fit h-fit object-cover rounded-xl opacity-50 group-hover:opacity-50">
-        </a>
+            <!-- Snack -->
+            <a href="{{ route('category.show', 'Snack') }}" class="group relative block aspect-[4/5] overflow-hidden rounded-[3rem] shadow-2xl transition-all hover-card border border-white/5">
+                <img src="{{ asset('storage/img/snak.jpg') }}" alt="Snack" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                <div class="absolute inset-0 p-10 flex flex-col justify-end">
+                    <p class="text-primary font-bold text-xs uppercase tracking-widest mb-2 opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0">Sweet & Savory</p>
+                    <h2 class="text-4xl font-header font-bold text-white italic">Snack</h2>
+                    <div class="mt-4 h-1 w-12 bg-primary transition-all group-hover:w-full"></div>
+                </div>
+            </a>
+        </div>
     </div>
-</div>
-
-
-<div class="main-content">
-
-</div>
-    <x-footer />
-
-    <!-- Feather Icons -->
-    <script>
-        feather.replace();
-    </script>
-
-</body>
-</html>
+@endsection
