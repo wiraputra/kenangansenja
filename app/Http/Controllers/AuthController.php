@@ -31,7 +31,8 @@ class AuthController extends Controller
             if ($user->role === 'admin' || $user->role === 'barista') {
                 return redirect()->route('dashboard');
             } else {
-                return redirect()->route('pembeli.dashboard')->with('success', 'login berhasil selamat datang' );
+                // Buyer redirected directly to the categories/menu page
+                return redirect()->route('categories.index')->with('success', 'Selamat datang kembali! Silakan pilih kopi favorit Anda.' );
             }
         }
 
