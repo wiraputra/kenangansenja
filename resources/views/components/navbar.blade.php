@@ -2,7 +2,7 @@
 use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 
-$activeOrdersCount = count(Order::where('user_id', Auth::id())->where('status', '!=', 'Completed')->get());
+$activeOrdersCount = Auth::check() ? count(Order::where('user_id', Auth::id())->where('status', '!=', 'Completed')->get()) : 0;
 @endphp
 
 <nav x-data="{ mobileMenuOpen: false, userDropdownOpen: false }" 
@@ -110,13 +110,27 @@ $activeOrdersCount = count(Order::where('user_id', Auth::id())->where('status', 
          class="md:hidden bg-espresso-950/95 backdrop-blur-xl border-t border-white/5"
          style="display: none;">
         <div class="px-4 pt-4 pb-6 space-y-2">
-            <a href="{{ route('pembeli.dashboard') }}" class="block px-4 py-3 rounded-xl text-base font-bold text-slate-300 hover:bg-white/5 hover:text-primary">Home</a>
+            <a href="{{ route('home') }}" class="block px-4 py-3 rounded-xl text-base font-bold text-slate-300 hover:bg-white/5 hover:text-primary">Home</a>
             <a href="{{ route('aboutus') }}" class="block px-4 py-3 rounded-xl text-base font-bold text-slate-300 hover:bg-white/5 hover:text-primary">Tentang Kami</a>
             <a href="{{ route('categories.index') }}" class="block px-4 py-3 rounded-xl text-base font-bold text-slate-300 hover:bg-white/5 hover:text-primary">Menu</a>
-            @if(auth()->user()->role === 'admin' || auth()->user()->role === 'barista')
+            
+            @auth
+                @if(auth()->user()->role === 'admin' || auth()->user()->role === 'barista')
+                    <hr class="border-white/5 my-2">
+                    <a href="{{ route('dashboard') }}" class="block px-4 py-3 rounded-xl text-base font-bold text-primary bg-primary/10">Dashboard Admin</a>
+                @endif
+                <a href="{{ route('orders.status') }}" class="block px-4 py-3 rounded-xl text-base font-bold text-slate-300 hover:bg-white/5 hover:text-primary">Pesanan Saya</a>
+                <form action="{{ route('logout') }}" method="POST" class="mt-2">
+                    @csrf
+                    <button type="submit" class="w-full text-left px-4 py-3 rounded-xl text-base font-bold text-red-400 hover:bg-red-500/10 transition-colors">
+                        Logout
+                    </button>
+                </form>
+            @else
                 <hr class="border-white/5 my-2">
-                <a href="{{ route('dashboard') }}" class="block px-4 py-3 rounded-xl text-base font-bold text-primary bg-primary/10">Dashboard Admin</a>
-            @endif
+                <a href="{{ route('login') }}" class="block px-4 py-3 rounded-xl text-base font-bold text-white hover:text-primary">Login</a>
+                <a href="{{ route('register') }}" class="block px-4 py-3 rounded-xl text-base font-bold text-primary">Daftar</a>
+            @endauth
         </div>
     </div>
 </nav>

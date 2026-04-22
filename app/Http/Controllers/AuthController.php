@@ -55,9 +55,8 @@ class AuthController extends Controller
 
     public function showRegisterForm()
     {
-        if (!Auth::check()) {
-            // Pengguna tidak login, kirimkan pesan error atau redirect ke halaman lain
-            return redirect()->route('login')->with('error', 'Anda harus login untuk mengakses halaman ini.');
+        if (Auth::check()) {
+            return redirect()->route('home');
         }
         return view('auth.register'); 
     }
